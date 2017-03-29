@@ -57,7 +57,12 @@ void add_box( struct matrix * edges,
 void add_sphere( struct matrix * edges, 
 		 double cx, double cy, double cz,
 		 double r, double step ) {
-  return;
+  struct matrix * sphere=new_matrix(4,4);
+  sphere= generate_sphere(cx,cy,cz,r1,r2,step);
+  for(int a =0; a<sphere->rows;a++){
+	 add_point(edges,sphere->m[a][0],sphere->m[a][1],sphere->m[a][2]);
+  }
+  
 }
 
 /*======== void generate_sphere() ==========
@@ -74,7 +79,22 @@ void add_sphere( struct matrix * edges,
   ====================*/
 struct matrix * generate_sphere(double cx, double cy, double cz,
 				double r, double step ) {
-  return NULL;
+  struct matrix * sphere=new_matrix(4,4);
+  struct matrix * circle=new_matrix(4,4);
+  struct matrix * change=new_matrix(4,4);
+  ident(change);
+  double end=(2*M_PI)/step;
+  for(int r=0; r<=end;r++){
+       add_circle(circle,cx,cy,cz,r1,.001);
+       change=make_rotY(r);
+       matrix_mult(circle,change);
+       for(int a =0; a<circle->rows;a++){
+	 add_point(sphere,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
+       }
+  }
+  
+
+  return sphere;
 }
 
 /*======== void add_torus() ==========
@@ -96,8 +116,12 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
 void add_torus( struct matrix * edges, 
 		double cx, double cy, double cz,
 		double r1, double r2, double step ) {
+  struct matrix * torus=new_matrix(4,4);
+  torus= generate_torus(cx,cy,cz,r1,r2,step);
+  for(int a =0; a<torus->rows;a++){
+	 add_point(edges,torus->m[a][0],torus->m[a][1],torus->m[a][2]);
+  }
   
-  return;
 }
 
 /*======== void generate_torus() ==========
@@ -120,13 +144,17 @@ struct matrix * generate_torus( double cx, double cy, double cz,
   ident(change);
   double end=(2*M_PI)/step;
   for(int r=0; r<=end;r++){
-       add_circle(torus,cx,cy,cz,r1,.001);
+       add_circle(circle,cx,cy,cz,r1,.001);
        change=make_rotY(r);
        matrix_mult(change,make_translate(r2,0,0));
+       matrix_mult(circle,change);
+       for(int a =0; a<circle->rows;a++){
+	 add_point(torus,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
+       }
   }
   
 
-  return NULL;
+  return torus;
 }
 
 /*======== void add_circle() ==========
