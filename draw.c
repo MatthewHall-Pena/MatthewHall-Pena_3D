@@ -31,7 +31,7 @@ void add_box( struct matrix * edges,
   add_edge(edges,x+width,y,z,x+width,y-height,z);
   add_edge(edges,x+width,y,z,x+width,y,z-depth);
   add_edge(edges,x,y-height,z-depth,x,y-height,z);
-  add_edge(edges,x,y-height,z-width,x,y,z-depth);
+  add_edge(edges,x,y-height,z-depth,x,y,z-depth);
   add_edge(edges,x,y-height,z-depth,x+width,y-height,z-depth);
   add_edge(edges,x+width,y-height,z-depth,x+width,y-height,z);
   add_edge(edges,x+width,y-height,z-depth,x+width,y,z-depth);
@@ -58,8 +58,9 @@ void add_sphere( struct matrix * edges,
 		 double cx, double cy, double cz,
 		 double r, double step ) {
   struct matrix * sphere=new_matrix(4,4);
-  sphere= generate_sphere(cx,cy,cz,r1,r2,step);
-  for(int a =0; a<sphere->rows;a++){
+  sphere= generate_sphere(cx,cy,cz,r,step);
+  int a;
+  for(a =0; a<sphere->rows;a++){
 	 add_point(edges,sphere->m[a][0],sphere->m[a][1],sphere->m[a][2]);
   }
   
@@ -84,11 +85,12 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
   struct matrix * change=new_matrix(4,4);
   ident(change);
   double end=(2*M_PI)/step;
-  for(int r=0; r<=end;r++){
-       add_circle(circle,cx,cy,cz,r1,.001);
-       change=make_rotY(r);
+  int a,b;
+  for(b=0; b<=end;b++){
+       add_circle(circle,cx,cy,cz,r,.001);
+       change=make_rotY(b);
        matrix_mult(circle,change);
-       for(int a =0; a<circle->rows;a++){
+       for(a =0; a<circle->rows;a++){
 	 add_point(sphere,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
        }
   }
@@ -118,7 +120,8 @@ void add_torus( struct matrix * edges,
 		double r1, double r2, double step ) {
   struct matrix * torus=new_matrix(4,4);
   torus= generate_torus(cx,cy,cz,r1,r2,step);
-  for(int a =0; a<torus->rows;a++){
+  int a;
+  for(a =0; a<torus->rows;a++){
 	 add_point(edges,torus->m[a][0],torus->m[a][1],torus->m[a][2]);
   }
   
@@ -143,12 +146,14 @@ struct matrix * generate_torus( double cx, double cy, double cz,
   struct matrix * change=new_matrix(4,4);
   ident(change);
   double end=(2*M_PI)/step;
-  for(int r=0; r<=end;r++){
+  int r;
+  int a;
+  for(r=0; r<=end;r++){
        add_circle(circle,cx,cy,cz,r1,.001);
        change=make_rotY(r);
        matrix_mult(change,make_translate(r2,0,0));
        matrix_mult(circle,change);
-       for(int a =0; a<circle->rows;a++){
+       for(a =0; a<circle->rows;a++){
 	 add_point(torus,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
        }
   }
