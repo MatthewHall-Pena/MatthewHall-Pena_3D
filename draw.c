@@ -60,8 +60,8 @@ void add_sphere( struct matrix * edges,
   struct matrix * sphere=new_matrix(4,4);
   sphere= generate_sphere(cx,cy,cz,r,step);
   int a;
-  for(a =0; a<sphere->rows;a++){
-	 add_point(edges,sphere->m[a][0],sphere->m[a][1],sphere->m[a][2]);
+  for(a =0; a<sphere->lastcol;a++){
+	 add_point(edges,sphere->m[0][a],sphere->m[1][a],sphere->m[2][a]);
   }
   
 }
@@ -90,8 +90,8 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
        add_circle(circle,cx,cy,cz,r,.001);
        change=make_rotY(b);
        matrix_mult(circle,change);
-       for(a =0; a<circle->rows;a++){
-	 add_point(sphere,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
+       for(a =0; a<circle->lastcol;a++){
+	 add_point(sphere,circle->m[0][a],circle->m[1][a],circle->m[2][a]);
        }
   }
   
@@ -121,8 +121,8 @@ void add_torus( struct matrix * edges,
   struct matrix * torus=new_matrix(4,4);
   torus= generate_torus(cx,cy,cz,r1,r2,step);
   int a;
-  for(a =0; a<torus->rows;a++){
-	 add_point(edges,torus->m[a][0],torus->m[a][1],torus->m[a][2]);
+  for(a =0; a<torus->lastcol;a++){
+	 add_point(edges,torus->m[0][a],torus->m[1][a],torus->m[2][a]);
   }
   
 }
@@ -153,8 +153,8 @@ struct matrix * generate_torus( double cx, double cy, double cz,
        change=make_rotY(r);
        matrix_mult(change,make_translate(r2,0,0));
        matrix_mult(circle,change);
-       for(a =0; a<circle->rows;a++){
-	 add_point(torus,circle->m[a][0],circle->m[a][1],circle->m[a][2]);
+       for(a =0; a<circle->lastcol;a++){
+	 add_point(torus,circle->m[0][a],circle->m[1][a],circle->m[2][a]);
        }
   }
   
