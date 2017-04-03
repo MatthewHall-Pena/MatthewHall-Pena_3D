@@ -84,10 +84,10 @@ struct matrix * generate_sphere(double cx, double cy, double cz,
   struct matrix * circle=new_matrix(4,4);
   struct matrix * change=new_matrix(4,4);
   ident(change);
-  double end=(2*M_PI)/step;
+  double end=(2*M_PI)/.1;
   int a,b;
   for(b=0; b<=end;b++){
-       add_circle(circle,cx,cy,cz,r,.001);
+       add_circle(circle,cx,cy,cz,r,.01);
        change=make_rotY(b);
        matrix_mult(change,circle);
        for(a =0; a<circle->lastcol;a++){
@@ -145,13 +145,13 @@ struct matrix * generate_torus( double cx, double cy, double cz,
   struct matrix * circle=new_matrix(4,4);
   struct matrix * change=new_matrix(4,4);
   ident(change);
-  double end=(2*M_PI)/step;
+  double end=(2*M_PI)/.1;
   int r;
   int a;
   for(r=0; r<=end;r++){
-       add_circle(circle,cx,cy,cz,r1,.001);
-       change=make_rotY(r);
-       matrix_mult(make_translate(r2,0,0),change);
+       add_circle(circle,cx,cy,cz,r1,.01);
+       change=make_translate(r2,0,0);
+       matrix_mult(make_rotY(r),change);
        matrix_mult(change,circle);
        for(a =0; a<circle->lastcol;a++){
 	 add_point(torus,circle->m[0][a],circle->m[1][a],circle->m[2][a]);
